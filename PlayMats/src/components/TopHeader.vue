@@ -38,11 +38,10 @@
         <q-btn
           v-for="item in menu"
           flat
-          round
           dense
           :label="item"
           :key="item"
-          class="q-ml-md menu-item"
+          class="q-ml-xl menu-item"
         />
       </div>
 
@@ -77,7 +76,7 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .q-header {
-  background: linear-gradient(123.2deg, #a8a5a5 15.09%, #E1E1E1 102.56%);
+  background: linear-gradient(123.2deg, #a8a5a5 15.09%, #f3e4e4 102.56%);
   color: #000;
   padding: 0 20px;
   display: flex;
