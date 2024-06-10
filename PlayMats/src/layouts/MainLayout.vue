@@ -24,6 +24,8 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <ContactForm />
   </q-layout>
   </div>
 
@@ -35,12 +37,14 @@
 import { defineComponent } from 'vue'
 import  TopHeader  from 'src/components/TopHeader.vue'
 import RandomMats from 'src/components/RandomMats.vue'
+import ContactForm from 'src/components/ContactForm.vue'
 
 export default defineComponent({
   name: 'MainLayout',
   components: {
     TopHeader,
-    RandomMats
+    RandomMats,
+    ContactForm
 
   },
   setup() {

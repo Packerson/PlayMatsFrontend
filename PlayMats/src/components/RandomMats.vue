@@ -1,84 +1,109 @@
 <template>
   <div class="flex column items-center q-mt-none">
-    <h2>Losowe maty</h2>
-    <div class="q-pa-md">
-      <q-carousel
-        :model-value="slide"
-        @update:model-value="updateSlide"
-          transition-prev="slide-right"
-        transition-next="slide-left"
-        swipeable
-        animated
-        control-color="amber"
-        navigation
-        padding
-        arrows
-        height="300px"
-        class="bg-grey-9 shadow-2 rounded-borders"
-      >
+    <q-carousel
+      :model-value="slide"
+      @update:model-value="updateSlide"
+      transition-prev="slide-right"
+      transition-next="slide-left"
+      swipeable
+      animated
+      control-type="flat"
+      control-color="white"
+      navigation
+      padding
+      arrows
+      height="400px"
+      class="carousel"
+    >
 
-        <q-carousel-slide v-for="mat in mats" :key="mat.id" :name="mat.id" style="width: 400px;">
-          <q-img :src="mat.image" :alt="mat.name" class="img full-width">
-            <div class="absolute-bottom bg-dark text-white text-center q-pa-sm">
+      <q-carousel-slide v-for="(matChunk, index) in matChunks" :key="index" :name="index" class="row no-wrap">
+        <div v-for="mat in matChunk" :key="mat.id" class="flex column fit justify-start items-center q-gutter-xs q-col-gutter no-wrap q-ma-xs">
+          <q-img :src="mat.image" :alt="mat.name" class="img"></q-img>
+          <div class="flex column">
               <div class="text-h5">{{ mat.name }}</div>
-              <div>{{ mat.price }} $</div>
+              <div>{{ mat.price }} zł</div>
             </div>
-          </q-img>
-        </q-carousel-slide>
-      </q-carousel>
-    </div>
+        </div>
+      </q-carousel-slide>
+
+    </q-carousel>
+
   </div>
 
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, computed } from 'vue'
 
 
 export default defineComponent ({
   name: 'RandomMats',
   setup() {
-    const mats = ref(null);
-    const randomMats = ref([]);
-    const slide = ref(1);
+    interface Mat {
+      id: number,
+      name: string,
+      image: string,
+      description: string,
+      price: number
+    }
 
-    const updateSlide = (value:any) => {
+    const mats = ref<Mat[] | null>(null);
+    const slide = ref(0)
+
+    const matChunks = computed(() => {
+      const chunks = []
+      if  (Array.isArray(mats.value) && mats.value.length !== 0) {
+        for (let i = 0; i < mats.value.length; i += 3) {
+          chunks.push(mats.value.slice(i, i + 3))
+        }
+      } else {
+        console.error('No mats found')
+      }
+
+      return chunks
+    })
+
+    const updateSlide = (value:number) => {
       slide.value = value
     }
 
-    const getRandomMats = () => {
-      if (mats.value.length === 0) {
+    // Sort shuffle mats
+    const shuffleMats = () => {
+      if ( Array.isArray(mats.value) && mats.value.length === 0) {
         return
+      } else if ( Array.isArray(mats.value) ){
+        mats.value.sort(() => Math.random() - 0.5)
       }
-      let randomMat = mats.value[(Math.floor(Math.random() * mats.value.length))];
-      mats.value = mats.value.filter((mat) => mat.id !== randomMat.id)
-      randomMats.value.push(randomMat)
+    }
 
-      return randomMats
+    // Fetch mats from json file
+    const fetchData = async () => {
+      try {
+        const response = await fetch('data/mats.json')
+
+        if (!response.ok) {
+          console.error('Failed to fetch mats')
+          return
+        }
+        mats.value = await response.json()
+        if ( Array.isArray(mats.value) && !mats.value.length) {
+          console.error('No mats found')
+        } else {
+          shuffleMats()
+          console.log('shuffleMats ', mats.value)
+        }
+      } catch (error) {
+        console.error('Failed to fetch mats', error)
+      }
     }
 
 
     onMounted( async() => {
-      const response = await fetch('data/mats.json')
-
-      if (!response.ok) {
-        console.error('Failed to fetch mats')
-        return
-      }
-      mats.value = await response.json()
-      if (!mats.value.length) {
-        console.error('No mats found')
-      } else {
-        // console.log('Mats', mats.value)
-        // for (let i = 0; i < 3; i++) {
-        //   getRandomMats()
-        // }
-      }
+      await fetchData()
     })
 
     return {
-      randomMats,
-      mats,
+      matChunks,
       slide,
       updateSlide
     }
@@ -87,6 +112,18 @@ export default defineComponent ({
 </script>
 
 <style scoped lang="scss">
+
+.carousel {
+  width: calc(100vw - 300px);
+  height: 400px;
+  max-height: 400px;
+  background-color: transparent;
+  .img {
+    width: 380px;
+    height: 350px;
+  }
+}
+
 
 .one-mat {
   width: 300px;
@@ -103,8 +140,6 @@ export default defineComponent ({
     align-items: center;
   }
 
-
-  
   .span {
     max-width: 200px;
     overflow: hidden;
@@ -112,12 +147,11 @@ export default defineComponent ({
     white-space: nowrap;
   }
 }
-.img {
-  width: 250px;
-  height: 230px;
-  max-height: 90%;
-  max-width: 95%;
 
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 

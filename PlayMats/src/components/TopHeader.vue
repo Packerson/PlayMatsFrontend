@@ -10,7 +10,6 @@
       <div>
         <q-btn
           flat
-          round
           dense
           label="PL"
           icon="img:/flags/pl.svg"
@@ -25,7 +24,6 @@
         </span>
         <q-btn
           flat
-          round
           dense
           label="Napisz"
           icon="mail"
