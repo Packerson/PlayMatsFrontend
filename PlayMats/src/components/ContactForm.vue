@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import emailjs from '@emailjs/browser';
-import  { user_id, service_id, template_id } from 'src/secrets/email.ts'
+import  { user_id, service_id, template_id } from 'src/secrets/email.js'
 
 export default defineComponent({
   name: 'ContactForm',
