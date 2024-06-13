@@ -7,18 +7,17 @@
 
       <RandomMats />
 
-      <iframe
-        width="860"
-        height="640"
-        src="https://www.youtube.com/embed/puEZyF2O9yI"
-        title="Biwak z widokiem na Czaple Wyspy // Zimowy Bushcraft"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
-        class="q-mt-xl"
-      >
-      </iframe>
+      <div class="video-wrapper x-mt-xl">
+        <iframe
+          src="https://www.youtube.com/embed/puEZyF2O9yI"
+          title="Biwak z widokiem na Czaple Wyspy // Zimowy Bushcraft"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        >
+        </iframe>
+      </div>
 
     </div>
     <q-page-container>
@@ -59,6 +58,20 @@ export default defineComponent({
 <style lang="scss">
 .layout-main {
     background: linear-gradient(123.2deg, #a8a5a5 15.09%, #E1E1E1 75.56%);
+}
+
+.video-wrapper {
+  width: 55%;
+  position: relative;
+  padding-bottom: 31.25%; /* 16:9 ratio, 9/16 = 0.5625 */
+  height: 0;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 </style>

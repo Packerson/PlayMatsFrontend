@@ -17,17 +17,16 @@
         />
         <span class="q-mr-md">
           <q-icon name="phone" />
-          Zadzwoń
-          <q-tooltip>
-            <span>123 456 789</span>
-          </q-tooltip>
+          Telefon: 123 456 789
         </span>
         <q-btn
           flat
           dense
           label="Napisz"
           icon="mail"
+          @click="goToContactForm"
         />
+        andriuxyz9@gmail.com
       </div>
     </div>
 
@@ -52,6 +51,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'TopHeader',
@@ -63,9 +63,16 @@ export default defineComponent({
     const menu = [
       'Maty', 'Tereny', 'Karty', 'Żetony', 'Akcesoria',
     ]
+
+    const router = useRouter();
+    const goToContactForm = () => {
+      router.push({ hash: '#contact-form' });
+    };
+
     return {
       menu,
       topMenu,
+      goToContactForm
     }
   },
 })

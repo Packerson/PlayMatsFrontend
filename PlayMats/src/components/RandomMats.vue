@@ -17,9 +17,11 @@
     >
 
       <q-carousel-slide v-for="(matChunk, index) in matChunks" :key="index" :name="index" class="row no-wrap">
-        <div v-for="mat in matChunk" :key="mat.id" class="flex column fit justify-start items-center q-gutter-xs q-col-gutter no-wrap q-ma-xs">
+        <div v-for="mat in matChunk" :key="mat.id"
+          class="flex column fit justify-start items-center q-gutter-xs q-col-gutter no-wrap q-ma-xs mat-container"
+        >
           <q-img :src="mat.image" :alt="mat.name" class="img"></q-img>
-          <div class="flex column">
+          <div class="flex column mat-info">
               <div class="text-h5">{{ mat.name }}</div>
               <div>{{ mat.price }} zł</div>
             </div>
@@ -114,44 +116,37 @@ export default defineComponent ({
 <style scoped lang="scss">
 
 .carousel {
-  width: calc(100vw - 300px);
-  height: 400px;
-  max-height: 400px;
+  width: 80vw;
+  max-width:1200px;
   background-color: transparent;
-  .img {
-    width: 380px;
-    height: 350px;
+
+  .q-carousel-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-}
 
-
-.one-mat {
-  width: 300px;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .container {
+  .mat-container {
+    width: calc(80vw / 3); // Adjust width to fit three items in the carousel view
+    max-width: 400px; // Adjust as necessary to prevent overflow
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
-  .span {
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: contain;
   }
-}
 
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  .mat-info {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 

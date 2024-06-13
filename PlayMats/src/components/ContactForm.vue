@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div id="contact-form" class="container">
     <h2>Kontakt</h2>
     <form id="contact_form" @submit.prevent="sendEmail">
       <div>
@@ -110,7 +110,7 @@ export default defineComponent({
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-  width: 50%;
+  width: 55%;
 }
 
 label {
