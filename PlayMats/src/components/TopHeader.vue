@@ -36,8 +36,9 @@
           v-for="item in menu"
           flat
           dense
-          :label="item"
-          :key="item"
+          :label="item.name"
+          :key="item.id"
+          @click="navigateToMat(item.url)"
           class="q-ml-xl menu-item"
         />
       </div>
@@ -61,7 +62,12 @@ export default defineComponent({
       'Flaga/wybór języka', 'Telefon', 'Napisz',
     ]
     const menu = [
-      'Maty', 'Tereny', 'Karty', 'Żetony', 'Akcesoria',
+      { id: 1, name: 'Home', url: '/' },
+      { id: 2, name: 'Maty', url: '/playmat' },
+      { id: 3, name: 'Tereny', url: '/terrains' },
+      { id: 4, name: 'Karty', url: '/cards' },
+      { id: 5, name: 'Żetony', url: '/tokens' },
+      { id: 6, name: 'Akcesoria', url: '/accessories'}
     ]
 
     const router = useRouter();
@@ -69,10 +75,19 @@ export default defineComponent({
       router.push({ hash: '#contact-form' });
     };
 
+    /**
+     * Navigate to mat details page
+     * @param url number | string
+     */
+     const navigateToMat = (url:number | string) => {
+      router.push(`${url}`)
+    }
+
     return {
       menu,
       topMenu,
-      goToContactForm
+      goToContactForm,
+      navigateToMat
     }
   },
 })

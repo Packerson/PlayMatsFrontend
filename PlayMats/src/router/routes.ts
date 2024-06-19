@@ -3,7 +3,22 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue')
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '',
+       component: () => import('pages/MainPage.vue') },
+      {
+        path: 'playmat',
+        component: () => import('pages/MatsPage.vue'),
+        name: 'MatsPage',
+      },
+      {
+        path: 'playmat/:matId',
+         component: () => import('pages/MatsDetailsPage.vue'),
+        name: 'MatsDetailsPage',
+        props: true
+      }
+    ],
   },
 
   // Always leave this as last one,

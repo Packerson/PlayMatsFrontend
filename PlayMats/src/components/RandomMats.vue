@@ -19,6 +19,7 @@
       <q-carousel-slide v-for="(matChunk, index) in matChunks" :key="index" :name="index" class="row no-wrap">
         <div v-for="mat in matChunk" :key="mat.id"
           class="flex column fit justify-start items-center q-gutter-xs q-col-gutter no-wrap q-ma-xs mat-container"
+          @click="navigateToMat(mat.id)"
         >
           <q-img :src="mat.image" :alt="mat.name" class="img"></q-img>
           <div class="flex column mat-info">
@@ -35,23 +36,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue'
-
+import { defineComponent, ref, onMounted, computed, useRouter } from 'src/utils/import'
+import { Mat } from 'src/utils/models'
 
 export default defineComponent ({
   name: 'RandomMats',
   setup() {
-    interface Mat {
-      id: number,
-      name: string,
-      image: string,
-      description: string,
-      price: number
-    }
 
     const mats = ref<Mat[] | null>(null);
     const slide = ref(0)
+    const router = useRouter()
 
+    /**
+     * Navigate to mat details page
+     * @param matId number
+     */
+    const navigateToMat = (matId:number) => {
+      router.push(`playmat/${matId}`)
+    }
+
+    /**
+     * Split mats into chunks of three
+     */
     const matChunks = computed(() => {
       const chunks = []
       if  (Array.isArray(mats.value) && mats.value.length !== 0) {
@@ -65,6 +71,11 @@ export default defineComponent ({
       return chunks
     })
 
+    /**
+     * Update slide value
+     * Change carousel slide
+     * @param value number
+     */
     const updateSlide = (value:number) => {
       slide.value = value
     }
@@ -107,7 +118,8 @@ export default defineComponent ({
     return {
       matChunks,
       slide,
-      updateSlide
+      updateSlide,
+      navigateToMat
     }
   }
 })

@@ -4,7 +4,10 @@
     "name": "Mat 1",
     "image": "/assets/mats/1.png",
     "description": "Description orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    "price": 150
+    "price": 150,
+    "image1": "/assets/detailsMats/1/Detail1.png",
+    "image2": "/assets/detailsMats/1/Detail2.jpg",
+    "image3": "/assets/detailsMats/1/Detail3.png"
   },
   {
     "id": 2,
