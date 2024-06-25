@@ -1,7 +1,7 @@
 <template>
   <div id="contact-form" class="container">
     <h2>Kontakt</h2>
-    <form id="contact_form" @submit.prevent="sendEmail">
+    <form id="contact_form" @submit.prevent="sendEmailLocaly">
       <div>
         <label for="name">Imię</label>
         <input type="text" id="name" v-model="form.name" required>
@@ -21,75 +21,38 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import emailjs from '@emailjs/browser';
 import  { user_id, service_id, template_id } from 'src/secrets/email.js'
+import { sendEmail, resetForm } from 'src/utils/emailjs'
 
 export default defineComponent({
   name: 'ContactForm',
   setup() {
 
-    interface EmailForm {
-      name: string,
-      email: string,
-      message: string
-    }
-
-    const form = ref<EmailForm>({
+    const form = ref<Record<string, unknown>>({
       name: '',
       email: '',
       message: ''
     });
 
-    const resetForm = () => {
-      form.value = {
-        name: '',
-        email: '',
-        message: ''
-      }
-    }
-
-    const initEmailJS = () => {
-      emailjs.init({
-        publicKey: user_id,
-        // Do not allow headless browsers
-        blockHeadless: true,
-        blockList: {
-          // Block the suspended emails
-          list: ['foo@emailjs.com', 'bar@emailjs.com'],
-          // The variable contains the email address
-          watchVariable: 'userEmail',
-        },
-        limitRate: {
-          // Set the limit rate for the application
-          id: 'app',
-          // Allow 1 request per 10s
-          throttle: 1,
-        },
-      });
-    }
 
     // send email with emailjs and initEmailJS
-    const sendEmail = async () => {
-      initEmailJS();
+    const sendEmailLocaly = async () => {
+      const response:boolean | null=  await sendEmail(
+        user_id,
+        service_id,
+        template_id,
+        form.value
+      );
 
-      try {
-        const response = await emailjs.send(
-          service_id,
-          template_id,
-          form.value,
-        );
-        console.log('SUCCESS!', response.status, response.text);
-        alert('Wiadomość wysłana pomyślnie!');
-        resetForm();
-      } catch (error) {
-        console.error('FAILED...', error);
-        alert('Wystąpił błąd podczas wysyłania wiadomości.');
+      if (response) {
+        const clearedForm = resetForm(form.value);
+        form.value = clearedForm
       }
-    };
+    }
 
     return {
       form,
-      sendEmail,
+      sendEmailLocaly,
       resetForm,
     }
   }

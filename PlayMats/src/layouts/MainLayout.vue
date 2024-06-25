@@ -35,6 +35,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout-main {
     background: linear-gradient(123.2deg, #a8a5a5 15.09%, #E1E1E1 75.56%);
+    // background: #ffffff;
 }
 
 
