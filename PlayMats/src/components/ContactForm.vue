@@ -21,9 +21,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import  { user_id, service_id, template_id } from 'src/secrets/email.js'
-import { sendEmail, resetForm } from 'src/utils/emailjs'
+import  { user_id, service_id, contactFormId } from 'src/secrets/email.js'
+import { sendEmail, resetForm, validateContactForm } from 'src/utils/emailjs'
 import { EmailForm } from 'src/utils/models'
+
 
 export default defineComponent({
   name: 'ContactForm',
@@ -37,10 +38,15 @@ export default defineComponent({
 
     // send email with emailjs and initEmailJS
     const sendEmailLocaly = async () => {
+
+      if (!validateContactForm(form.value)) {
+        return;
+      }
+
       const response:boolean | null=  await sendEmail(
         user_id,
         service_id,
-        template_id,
+        contactFormId,
         form.value
       );
 
@@ -48,6 +54,8 @@ export default defineComponent({
         form.value = resetForm('email') as EmailForm;
       }
     }
+
+
 
     return {
       form,
@@ -60,9 +68,7 @@ export default defineComponent({
 
 </script>
 
-
-
-<style scoped>
+<style scoped lang="scss">
 * {box-sizing: border-box;}
 
 .container {

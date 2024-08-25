@@ -48,12 +48,22 @@
         <textarea id="message" v-model="form.message"></textarea>
       </div>
       <div>
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="form.email">
+        <label for="firstName">Imię</label>
+        <input type="text" id="firstName" v-model="form.firstName" required>
       </div>
       <div>
-        <label for="phone">Telefon</label>
-        <input type="text" id="phone" v-model="form.phone">
+        <label for="lastName">Nazwisko</label>
+        <input type="text" id="lastName" v-model="form.lastName" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" v-model="form.email" required>
+      </div>
+      <div>
+        <label for="phone">Telefon
+          <small>Format (123456789)</small>
+        </label>
+        <input type="tel" id="phone" v-model="form.phone" pattern="[0-9]{9,13}" required>
       </div>
       <button type="submit">Wyślij</button>
     </form>
@@ -64,8 +74,8 @@
 
 import { defineComponent, ref } from 'src/utils/import'
 import { Mat, EmailFormMat } from 'src/utils/models'
-import  { user_id, service_id, template_id } from 'src/secrets/email.js'
-import { sendEmail, resetForm } from 'src/utils/emailjs'
+import  { user_id, service_id, matDetailsContactFormId } from 'src/secrets/email.js'
+import { sendEmail, resetForm, validateMatForm } from 'src/utils/emailjs'
 
 
 export default defineComponent ({
@@ -87,7 +97,10 @@ export default defineComponent ({
     ]
 
     const form = ref<EmailFormMat>({
-      name: '',
+      matName: props.mat?.name || '',
+      matId: props.mat?.id || 0,
+      firstName: '',
+      lastName: '',
       email: '',
       phone: '',
       message: '',
@@ -99,10 +112,16 @@ export default defineComponent ({
     });
 
     const sendEmailLocaly = async () => {
+
+      console.log(form.value);
+
+      if (!validateMatForm(form.value)) {
+        return;
+      }
       const response:boolean | null=  await sendEmail(
         user_id,
         service_id,
-        template_id,
+        matDetailsContactFormId,
         form.value
       );
 
@@ -149,7 +168,7 @@ label {
   float: left;
 }
 
-input[type=text], [type=email], [type=number], textarea {
+input[type=text], [type=email], [type=number], [type=tel], textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;

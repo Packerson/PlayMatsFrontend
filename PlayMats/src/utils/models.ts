@@ -18,7 +18,10 @@ export interface EmailForm {
 }
 
 export interface EmailFormMat {
-  name: string,
+  matName: string,
+  matId: number,
+  firstName: string,
+  lastName: string,
   email: string,
   phone: string,
   message: string,

@@ -31,14 +31,14 @@ export const initEmailJS = (user_id:string) => {
  * Init and send email using EmailJS
  * @param user_id string
  * @param service_id string
- * @param template_id string
+ * @param contactFormId string
  * @param form form
  * @returns boolean
  */
 
-export const sendEmail = async (user_id:string, service_id:string, template_id:string, form: Record<string, unknown>) => {
+export const sendEmail = async (user_id:string, service_id:string, contactFormId:string, form: Record<string, unknown>) => {
 
-  if (!user_id || !service_id || !template_id || !form) {
+  if (!user_id || !service_id || !contactFormId || !form) {
     return null;
   }
   initEmailJS(user_id);
@@ -46,7 +46,7 @@ export const sendEmail = async (user_id:string, service_id:string, template_id:s
   try {
     const response = await emailjs.send(
       service_id,
-      template_id,
+      contactFormId,
       form,
     );
     console.log('SUCCESS!', response.status, response.text);
@@ -76,7 +76,10 @@ export const resetForm = (formType:string) => {
 
 // Default form values
 const emailMatForm = {
-  name: '',
+  matName: '',
+  matId: 0,
+  firstName: '',
+  lastName: '',
   email: '',
   phone: '',
   message: '',
@@ -92,3 +95,34 @@ const emailForm = {
   email: '',
   message: ''
 };
+
+
+/* Validate email
+ * @param email string
+ */
+export const validateEmail = (email: string) => {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
+
+/**
+ * Validate contact form
+ * @param form EmailForm
+ */
+export const validateContactForm = (form: EmailForm) => {
+  if (!form.email || !form.message) {
+    return false;
+  }
+  return validateEmail(form.email);
+}
+
+/**
+ * Validate mat form
+ * @param form EmailFormMat
+ */
+export const validateMatForm = (form: EmailFormMat) => {
+  if (!form.email || !form.size || !form.matherial || !form.quantity || !form.phone || !form.matId) {
+    return false;
+  }
+  return validateEmail(form.email);
+}
