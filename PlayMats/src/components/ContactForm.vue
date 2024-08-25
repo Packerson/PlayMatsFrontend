@@ -35,7 +35,6 @@ export default defineComponent({
       message: ''
     });
 
-
     // send email with emailjs and initEmailJS
     const sendEmailLocaly = async () => {
       const response:boolean | null=  await sendEmail(
