@@ -63,7 +63,7 @@ export const sendEmail = async (user_id:string, service_id:string, template_id:s
 
 /**
  * Reset form
- * @param form form
+ * @param formType string
  * @returns form
  */
 export const resetForm = (formType:string) => {
