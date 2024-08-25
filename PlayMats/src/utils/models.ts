@@ -17,3 +17,14 @@ export interface EmailForm {
   message: string
 }
 
+export interface EmailFormMat {
+  name: string,
+  email: string,
+  phone: string,
+  message: string,
+  size: string,
+  matherial: string,
+  doubleSided: boolean,
+  doubleSidedDescription: string,
+  quantity: number
+};

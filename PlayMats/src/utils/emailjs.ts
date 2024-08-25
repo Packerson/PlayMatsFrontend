@@ -1,4 +1,5 @@
 import emailjs from '@emailjs/browser';
+import { EmailFormMat, EmailForm } from 'src/utils/models';
 
 
 /**
@@ -65,9 +66,29 @@ export const sendEmail = async (user_id:string, service_id:string, template_id:s
  * @param form form
  * @returns form
  */
-export const resetForm = (form:Record<string, unknown>) => {
-  for (const key in form) {
-    form[key] = '';
+export const resetForm = (formType:string) => {
+  if (formType === 'mat') {
+    return emailMatForm;
+  } else if (formType === 'email') {
+    return emailForm;
   }
-  return form;
 }
+
+// Default form values
+const emailMatForm = {
+  name: '',
+  email: '',
+  phone: '',
+  message: '',
+  size: '',
+  matherial: '',
+  doubleSided: false,
+  doubleSidedDescription: '',
+  quantity: 1
+};
+
+const emailForm = {
+  name: '',
+  email: '',
+  message: ''
+};

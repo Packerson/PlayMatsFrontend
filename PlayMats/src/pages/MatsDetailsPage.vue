@@ -15,7 +15,7 @@
             :key="index"
             :name="index"
             :img-src="image"
-            @click="openModal(image)"
+            @click="openModal(image ?? '')"
           >
           </q-carousel-slide>
         </q-carousel>
@@ -32,7 +32,6 @@
         </div>
 
       </div>
-
 
       <div id="details" class="q-mt-xl q-ml-xl">
         <div class="q-ml-md q-mt-md text-left">
@@ -54,19 +53,13 @@
         </div>
       </div>
 
-
-
       <!-- Modal for Enlarged Image -->
       <q-dialog v-model="isModalOpen">
-        <q-card>
-          <q-card-section>
-            <img :src="currentImage" class="full-image"/>
-          </q-card-section>
-        </q-card>
+        <img :src="currentImage" class="full-image"/>
       </q-dialog>
 
     </div>
-    <div>
+    <div v-if="matDetails">
       <MatDetailsContactForm :mat="matDetails" />
     </div>
   </div>
@@ -75,6 +68,7 @@
 
 <script lang="ts">
 import { defineComponent, useRoute, onMounted, watch, ref, computed } from 'src/utils/import';
+import { fetchMat } from 'src/utils/functions';
 import { Mat } from 'src/utils/models'
 import MatDetailsContactForm from '../components/MatDetailsContactForm.vue';
 
@@ -97,45 +91,30 @@ export default defineComponent({
       ]
     })
 
+    /**
+     * Open modal with enlarged image
+     * @param image - image to display in modal
+     */
     const openModal = (image: string) => {
+      if (!image) return
       isModalOpen.value = true
       currentImage.value = image
-      console.log('openModal', image);
-      console.log('currentImage', currentImage.value);
     }
 
-    const fetchMat = async () => {
-      try {
-        const matId = Number(route.params.matId);
-        const response = await fetch('data/mats.json')
-
-        if (!response.ok) {
-          console.error('Failed to fetch mats')
-          return
-        }
-        const temp = await response.json()
-        matDetails.value = temp.find((mat: Mat) => mat.id === matId)
-        if(!matDetails.value) {
-          console.error('Mat not found')
-          return
-        }
-
-        console.log('matDetails', matDetails.value);
-
-      } catch (error) {
-        console.error('Failed to fetch mats', error)
-      }
-    }
-
+    /**
+     * Fetch mat details on page load and when route changes
+     */
     onMounted(async () => {
-      console.log('MatDetailPage mounted');
-
-      await fetchMat();
+      const matId = Number(route.params.matId);
+      matDetails.value = await fetchMat(matId);
     });
 
+    /**
+     * Fetch mat details when route changes
+     */
     watch(() => route.params.matId, async () => {
-      console.log('router.params.id changed');
-      await fetchMat();
+      const matId = Number(route.params.matId);
+      matDetails.value = await fetchMat(matId);
     });
 
     return {
@@ -173,9 +152,15 @@ export default defineComponent({
   border-radius: 5px;
 }
 
-.full-image {
-  width: 100%;
-  height: auto;
+.q-dialog {
+  .full-image {
+    width: calc(100vw - 30vw);
+    max-width: 900px;
+
+    height: calc(100vw - 30vw);
+    max-height: 900px;
+
+  }
 }
 
 #details {

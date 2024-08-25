@@ -23,12 +23,13 @@
 import { defineComponent, ref } from 'vue'
 import  { user_id, service_id, template_id } from 'src/secrets/email.js'
 import { sendEmail, resetForm } from 'src/utils/emailjs'
+import { EmailForm } from 'src/utils/models'
 
 export default defineComponent({
   name: 'ContactForm',
   setup() {
 
-    const form = ref<Record<string, unknown>>({
+    const form = ref<EmailForm>({
       name: '',
       email: '',
       message: ''
@@ -45,8 +46,7 @@ export default defineComponent({
       );
 
       if (response) {
-        const clearedForm = resetForm(form.value);
-        form.value = clearedForm
+        form.value = resetForm('email') as EmailForm;
       }
     }
 

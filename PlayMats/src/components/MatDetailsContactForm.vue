@@ -62,8 +62,8 @@
 
 <script lang="ts">
 
-import { defineComponent, ref, onMounted, computed, useRouter } from 'src/utils/import'
-import { Mat } from 'src/utils/models'
+import { defineComponent, ref } from 'src/utils/import'
+import { Mat, EmailFormMat } from 'src/utils/models'
 import  { user_id, service_id, template_id } from 'src/secrets/email.js'
 import { sendEmail, resetForm } from 'src/utils/emailjs'
 
@@ -72,21 +72,11 @@ export default defineComponent ({
   name: 'DetailContactForm',
   props: {
     mat: {
-      type: Object as () => Mat | any,
-      required: true
+      type: Object as () => Mat | null,
+      required: true,
     }
   },
   setup(props) {
-    interface EmailForm {
-      name: string,
-      email: string,
-      message: string
-      size: string
-      matherial: string
-      doubleSided: boolean
-      doubleSidedDescription: string
-      quantity: number
-    };
 
     const matherial = [
       'Guma',
@@ -96,9 +86,10 @@ export default defineComponent ({
       'Inne'
     ]
 
-    const form = ref<Record<string, unknown>>({
-      name: props.mat?.name,
+    const form = ref<EmailFormMat>({
+      name: '',
       email: '',
+      phone: '',
       message: '',
       size: '',
       matherial: '',
@@ -116,8 +107,7 @@ export default defineComponent ({
       );
 
       if (response) {
-        const clearedForm = resetForm(form.value);
-        form.value = clearedForm
+        form.value = resetForm('mat') as EmailFormMat;
       }
     }
 
