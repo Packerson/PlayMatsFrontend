@@ -72,7 +72,7 @@ export default defineComponent({
 
     const router = useRouter();
     const goToContactForm = () => {
-      router.push({ hash: '#contact-form' });
+      router.push({ name: 'MainPage', hash: '#contact-form' });
     };
 
     /**

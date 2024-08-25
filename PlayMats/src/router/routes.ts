@@ -5,7 +5,9 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '',
+      {
+        path: '',
+        name: 'MainPage',
        component: () => import('pages/MainPage.vue') },
       {
         path: 'playmat',
@@ -14,7 +16,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'playmat/:matId',
-         component: () => import('pages/MatsDetailsPage.vue'),
+        component: () => import('pages/MatsDetailsPage.vue'),
         name: 'MatsDetailsPage',
         props: true
       }

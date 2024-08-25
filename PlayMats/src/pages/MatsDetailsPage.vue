@@ -47,6 +47,7 @@
             color="primary"
             label="Zapytaj o produkt"
             class="q-my-md q-mb-xl"
+            @click="navigateToContactForm"
           />
           <div class="q-mb-xl">{{ matDetails?.description }}</div>
           <div class="">Dostępne rozmiary: {{ matDetails?.availableSizes }}</div>
@@ -60,14 +61,14 @@
 
     </div>
     <div v-if="matDetails">
-      <MatDetailsContactForm :mat="matDetails" />
+      <MatDetailsContactForm :mat="matDetails"/>
     </div>
   </div>
 </template>
 
 
 <script lang="ts">
-import { defineComponent, useRoute, onMounted, watch, ref, computed } from 'src/utils/import';
+import { defineComponent, useRoute, onMounted, watch, ref, computed, useRouter } from 'src/utils/import';
 import { fetchMat } from 'src/utils/functions';
 import { Mat } from 'src/utils/models'
 import MatDetailsContactForm from '../components/MatDetailsContactForm.vue';
@@ -81,6 +82,7 @@ export default defineComponent({
   setup() {
 
     const route = useRoute();
+    const router = useRouter();
     const matDetails = ref<Mat | null>(null);
     const slide = ref(1)
     const isModalOpen = ref(false)
@@ -90,6 +92,10 @@ export default defineComponent({
         matDetails.value?.image, matDetails.value?.image1, matDetails.value?.image2, matDetails.value?.image3
       ]
     })
+
+    const navigateToContactForm = () => {
+      router.push({ hash: '#contact-form' });
+    }
 
     /**
      * Open modal with enlarged image
@@ -123,7 +129,8 @@ export default defineComponent({
       slide,
       isModalOpen,
       openModal,
-      currentImage
+      currentImage,
+      navigateToContactForm
     }
   }
 })

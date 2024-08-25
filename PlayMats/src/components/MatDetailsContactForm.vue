@@ -1,6 +1,6 @@
 <template>
   <div id="contact-details-form" >
-    <form id="contact_form" @submit.prevent="sendEmailLocaly">
+    <form id="contact-form" @submit.prevent="sendEmailLocaly">
       <div class="text-h4">
         {{ mat?.name }}
       </div>
@@ -156,7 +156,7 @@ export default defineComponent ({
   width: 40%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
-  #contact_form {
+  #contact-form {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
