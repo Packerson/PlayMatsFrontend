@@ -2,7 +2,7 @@
   "name": "playmats",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "productName": "Maty Taktyczne",
   "author": "Paweł Kaczmarek",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
     "@quasar/extras": "^1.16.4",
+    "axios": "^1.7.2",
     "core-js": "^3.31.1",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",
