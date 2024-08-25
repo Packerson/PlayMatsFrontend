@@ -36,8 +36,9 @@ yarn-error.log*
 # local .env files
 .env.local*
 
-.secrets
+
 
 /node_modules/
 
-PlayMats/src/secrets/
+PlayMats/src/secrets/email.js
+src/secrets/email.js
